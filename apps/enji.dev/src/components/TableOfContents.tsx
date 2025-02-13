@@ -4,36 +4,39 @@ import { m } from 'framer-motion';
 import useOnScroll from '@/hooks/useOnScroll';
 import useScrollSpy from '@/hooks/useScrollSpy';
 
-import type { TTableOfContentsItem } from '@/types';
+import type { TTableOfContents } from '@/types';
 
-interface TableOfContentsLinkProps extends TTableOfContentsItem {
+interface TableOfContentsLinkProps {
+  title: string;
+  url: string;
   active?: boolean;
+  isNested?: boolean;
 }
 
 function TableOfContentsLink({
   title,
-  depth,
-  slug,
+  url,
   active = false,
+  isNested = false,
 }: TableOfContentsLinkProps) {
   return (
     <a
       className={clsx('toc-link', {
-        'toc-link--depth-2': depth === 2,
+        'toc-link--depth-2': isNested,
         'toc-link--active': active,
       })}
-      href={`#${slug}`}
+      href={url}
     >
       {title}
     </a>
   );
 }
 
-interface TableOfContensProps {
-  items?: Array<TTableOfContentsItem>;
+interface TableOfContentsProps {
+  items?: TTableOfContents['items'];
 }
 
-function TableOfContents({ items = [] }: TableOfContensProps) {
+function TableOfContents({ items = [] }: TableOfContentsProps) {
   const isScrolled = useOnScroll(200);
   const { currentVisibles } = useScrollSpy();
 
@@ -79,20 +82,42 @@ function TableOfContents({ items = [] }: TableOfContensProps) {
           </a>
         </m.div>
       </div>
-      <div className={clsx('relative p-3 py-4')}>
-        <ol className={clsx('toc flex flex-col gap-2')}>
-          {items.map(({ title, depth, slug }) => {
-            const isActive = currentVisibles && currentVisibles[slug];
+      <div className={clsx('toc')}>
+        <ol className={clsx('flex flex-col gap-2')}>
+          {items.map(({ title, url, items: subItems }) => {
+            const isActive = currentVisibles && currentVisibles[url.slice(1)];
 
             return (
-              <li key={slug}>
+              <li key={url}>
                 <TableOfContentsLink
                   title={title}
-                  depth={depth}
-                  slug={slug}
+                  url={url}
                   active={isActive}
                 />
                 {isActive && <div className={clsx('toc-visible')} />}
+                {subItems && subItems.length > 0 && (
+                  <ol className={clsx('mt-1 flex flex-col gap-1')}>
+                    {subItems.map((subItem) => {
+                      const isSubActive =
+                        currentVisibles &&
+                        currentVisibles[subItem.url.slice(1)];
+
+                      return (
+                        <li key={subItem.url}>
+                          <TableOfContentsLink
+                            title={subItem.title}
+                            url={subItem.url}
+                            active={isSubActive}
+                            isNested
+                          />
+                          {isSubActive && (
+                            <div className={clsx('toc-visible')} />
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ol>
+                )}
               </li>
             );
           })}

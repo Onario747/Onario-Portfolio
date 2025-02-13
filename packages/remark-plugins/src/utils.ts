@@ -40,19 +40,28 @@ export const getTableOfContents = (tree) => {
     const node = tree.children[nodeIndex];
 
     if (node.type === 'heading' && [2, 3].includes(node.depth)) {
-      const depth = node.depth - 1;
       const title = node.children
         .filter((n) => n.type === 'text')
         .map((n) => n.value)
         .join('');
 
-      contents.push({
-        title,
-        slug: slug(title),
-        depth,
-      });
+      const slugValue = slug(title);
+
+      if (node.depth === 2) {
+        contents.push({
+          title,
+          url: `#${slugValue}`,
+          items: [],
+        });
+      } else if (node.depth === 3 && contents.length > 0) {
+        const lastH2 = contents[contents.length - 1];
+        lastH2.items.push({
+          title,
+          url: `#${slugValue}`,
+        });
+      }
     }
   }
 
-  return contents;
+  return { items: contents };
 };

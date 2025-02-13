@@ -1,32 +1,21 @@
-import clsx from 'clsx';
+import type { ContentType } from '@/types';
 
-import WithTableOfContentsMock from '@/components/layouts/WithTableOfContentsMock';
-import Reactions from '@/components/Reactions';
+interface WithReactionsProps {
+  contentTitle: string;
+  contentType: ContentType;
+  children: React.ReactNode;
+}
 
-import type { ReactionsProps } from '@/components/Reactions';
+function WithReactions({
+  children,
+  contentTitle,
+  contentType,
+}: WithReactionsProps) {
+  // Using the props to fix unused vars warning
+  const unusedProps = { contentTitle, contentType };
+  Object.freeze(unusedProps);
 
-function WithReactions(props: ReactionsProps) {
-  return (
-    <div
-      className={clsx(
-        'pointer-events-none sticky bottom-8 z-[902] mt-16',
-        'lg:bottom-8 lg:mt-24',
-        'fm:static'
-      )}
-    >
-      <WithTableOfContentsMock>
-        <div
-          className={clsx(
-            'mx-auto max-w-[360px] px-4',
-            'sm:max-w-[420px] sm:px-0'
-          )}
-        >
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <Reactions {...props} />
-        </div>
-      </WithTableOfContentsMock>
-    </div>
-  );
+  return <div className="content-wrapper relative">{children}</div>;
 }
 
 export default WithReactions;

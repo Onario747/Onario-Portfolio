@@ -6,10 +6,6 @@ import { SectionButton } from '@/components/sections/SectionButton';
 import SectionContent from '@/components/sections/SectionContent';
 import SectionTitle from '@/components/sections/SectionTitle';
 
-import TodoItem from '@/contents/index/Cards/TodoItem';
-
-import type { TodoItemState } from '@/contents/index/Cards/TodoItem';
-
 type Content = {
   state: 'frontend' | 'mobile' | 'ui' | 'integration';
   title: string;

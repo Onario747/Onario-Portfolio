@@ -1,93 +1,80 @@
-import type { ContentType, ReactionType, ShareType } from '@prisma/client';
+export type ContentType = 'POST' | 'DOCS' | 'PROJECT';
+export type ReactionType = 'AMAZED' | 'CLAPPING' | 'THINKING';
+export type ShareType = 'TWITTER' | 'CLIPBOARD';
 
-export type TApiResponse = {
-  message: string;
+export type TContentActivityBase = {
+  activityType: 'REACTION' | 'SHARE';
+  type: ReactionType | ShareType;
+  slug: string;
+  contentTitle: string;
+  contentType: ContentType;
+  createdAt: string;
+};
+
+export type TContentActivityReaction = TContentActivityBase & {
+  activityType: 'REACTION';
+  type: ReactionType;
+  count: number;
+};
+
+export type TContentActivityShare = TContentActivityBase & {
+  activityType: 'SHARE';
+  type: ShareType;
+};
+
+export type TContentActivity = TContentActivityReaction | TContentActivityShare;
+
+export type TPostOgImage = {
+  category?: string;
+  title?: string;
+  tags?: string[];
+  date?: string;
+  lang: 'id' | 'en';
+  aspectRatio?: '16/9' | '4/3' | '1/1';
+};
+
+export type TTableOfContents = {
+  items: Array<{
+    title: string;
+    url: string;
+    items?: Array<{
+      title: string;
+      url: string;
+    }>;
+  }>;
 };
 
 export type TTableOfContentsItem = {
   title: string;
-  depth: number;
-  slug: string;
+  url: string;
 };
 
-export type TTableOfContents = Array<TTableOfContentsItem>;
+export type TPageOgImage = {
+  caption?: string;
+  title?: string;
+  description?: string;
+};
 
-export type TBaseFrontMatter = {
+export type TPageFrontMatter = {
   title: string;
   description: string;
   caption?: string;
 };
 
-export type TPageFrontMatter = TBaseFrontMatter;
-
-export type TPageOgImage = Partial<
-  Pick<TPageFrontMatter, 'caption' | 'title' | 'description'>
->;
-
-export type TPostFrontMatter = TBaseFrontMatter & {
-  date: string;
-  lang: 'id' | 'en';
-  tags: Array<string>;
-  category: string;
-};
-
-export type TPostOgImage = Partial<
-  Pick<TPostFrontMatter, 'category' | 'title' | 'date' | 'lang' | 'tags'>
-> & {
-  aspectRatio?: '16/9' | '4/3' | '1/1';
-};
-
-export type TProjectFrontMatter = TBaseFrontMatter & {
+export type TProjectFrontMatter = {
+  title: string;
+  description: string;
+  caption?: string;
   githubUrl?: string;
   npmUrl?: string;
-  type: 'package';
 };
 
-export type TReaction = Record<ReactionType, number>;
-
-export type TContentMeta = {
-  meta: {
-    views: number;
-    shares: number;
-  };
+export type TPostFrontMatter = {
+  title: string;
+  description: string;
+  caption?: string;
+  date: string;
+  lang: 'id' | 'en';
+  tags: string[];
+  category: string;
 };
-
-export type TContentMetaDetail = {
-  meta: {
-    views: number;
-    shares: number;
-    reactions: number;
-    reactionsDetail: TReaction;
-  };
-  metaUser: {
-    reactionsDetail: TReaction;
-  };
-  metaSection: {
-    [section: string]: {
-      reactionsDetail: TReaction;
-    };
-  };
-};
-
-export type TContentActivityShares = {
-  activityType: 'SHARE';
-  type: ShareType;
-  createdAt: string;
-  slug: string;
-  contentTitle: string;
-  contentType: ContentType;
-};
-
-export type TContentActivityReaction = {
-  activityType: 'REACTION';
-  type: ReactionType;
-  count: number;
-  createdAt: string;
-  slug: string;
-  contentTitle: string;
-  contentType: ContentType;
-};
-
-export type TContentActivity =
-  | TContentActivityShares
-  | TContentActivityReaction;

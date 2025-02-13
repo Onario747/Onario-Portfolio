@@ -6,7 +6,6 @@ import { useRef } from 'react';
 import ActionCenter from '@/components/ActionCenter';
 import Activity from '@/components/Activity';
 import { XIcon } from '@/components/Icons';
-import NewPosts from '@/components/NewPosts';
 import TipShortcuts from '@/components/TipShortcuts';
 
 import useGlobal from '@/hooks/useGlobal';
@@ -70,9 +69,6 @@ function QuickAccess() {
           >
             <div className={clsx('')}>
               <ActionCenter />
-            </div>
-            <div className={clsx('')}>
-              <NewPosts onItemClick={() => setQuickAccessOpen(false)} />
             </div>
             <div className={clsx('flex flex-1 flex-col')}>
               <Activity onItemClick={() => setQuickAccessOpen(false)} />

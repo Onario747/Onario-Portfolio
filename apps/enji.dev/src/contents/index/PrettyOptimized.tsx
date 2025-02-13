@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
-import SectionTitle from '@/components/sections/SectionTitle';
 import SectionContent from '@/components/sections/SectionContent';
+import SectionTitle from '@/components/sections/SectionTitle';
 
 const practices = [
   {

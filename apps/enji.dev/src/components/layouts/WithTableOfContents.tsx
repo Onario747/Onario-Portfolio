@@ -1,53 +1,33 @@
 import clsx from 'clsx';
-
 import TableOfContents from '@/components/TableOfContents';
-
 import type { TTableOfContents } from '@/types';
-import type { PropsWithChildren } from 'react';
 
-interface PageWithMDXProps {
+interface WithTableOfContentsProps {
   tableOfContents: TTableOfContents;
+  children: React.ReactNode;
 }
 
-function PageWithMDX({
+function WithTableOfContents({
+  children,
   tableOfContents,
-  children = null,
-}: PropsWithChildren<PageWithMDXProps>) {
+}: WithTableOfContentsProps) {
+  // Using tableOfContents to fix unused vars warning
+  const hasToc = tableOfContents?.items?.length > 0;
+
   return (
-    <div
-      className={clsx(
-        'content-wrapper flex-shrink-0 overflow-hidden',
-        'lg:overflow-visible'
-      )}
-    >
+    <div className={clsx('content-wrapper relative', hasToc && 'with-toc')}>
       <div className={clsx('flex flex-row-reverse gap-8', 'xl:gap-24')}>
-        <div className={clsx('-mt-48 hidden', 'lg:block')}>
-          <div
-            className={clsx(
-              'sticky top-24 z-[901] w-64',
-              'xl:w-[272px]',
-              'fm:relative fm:top-0'
-            )}
-          >
-            <TableOfContents items={tableOfContents} />
+        {hasToc && (
+          <div className={clsx('hidden lg:block')}>
+            <div className={clsx('sticky top-24 w-64 xl:w-[272px]')}>
+              <TableOfContents items={tableOfContents.items} />
+            </div>
           </div>
-        </div>
-        <div
-          className={clsx('mdx-contents min-w-0 flex-1 scroll-mt-[86px]')}
-          id="main-contents"
-          data-ss-wrapper
-        >
-          {children}
-        </div>
-        <div
-          className={clsx(
-            'border-divider-light hidden border-l',
-            'dark:border-divider-dark lg:block'
-          )}
-        />
+        )}
+        <div className={clsx('min-w-0 flex-1')}>{children}</div>
       </div>
     </div>
   );
 }
 
-export default PageWithMDX;
+export default WithTableOfContents;

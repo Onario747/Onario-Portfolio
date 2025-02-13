@@ -1,21 +1,22 @@
-import useSWR from 'swr';
-
-import fetcher from '@/utils/fetcher';
-
 import type { TContentActivity } from '@/types';
 
 export default function useContentActivity() {
-  const {
-    data,
-    error: isError,
-    isLoading,
-  } = useSWR<TContentActivity[]>('/api/activity', fetcher, {
-    fallbackData: [],
-  });
+  // Return static data since we removed the backend
+  const staticData: TContentActivity[] = [
+    {
+      activityType: 'REACTION',
+      type: 'CLAPPING',
+      slug: 'projects',
+      contentTitle: 'Projects',
+      contentType: 'DOCS',
+      createdAt: new Date().toISOString(),
+      count: 1,
+    },
+  ];
 
   return {
-    isLoading,
-    isError,
-    data,
+    isLoading: false,
+    isError: false,
+    data: staticData,
   };
 }

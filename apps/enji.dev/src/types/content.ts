@@ -26,7 +26,7 @@ export type TContentMetaDetail = {
   metaUser: {
     reactionsDetail: Record<ReactionType, number>;
   };
-  metaSection: Record<string, any>;
+  metaSection: Record<string, unknown>;
 };
 
 export type TApiResponse = {
