@@ -65,7 +65,7 @@ const projects = [
   {
     title: 'Fluxel',
     description:
-      'A fully functional Broker application for trading and managing digital assets',
+      'A fully crypto exchange platform for trading and managing digital assets',
     image: '/assets/images/projects/fluxel.png',
     link: 'https://fluxel.app',
     type: 'web' as const,
@@ -180,7 +180,7 @@ function ProjectsContents() {
       </m.div>
       <div className={clsx('mt-16 text-center')}>
         <Link
-          href="https://github.com/onakoyakayode"
+          href="https://github.com/Onario747"
           target="_blank"
           rel="noopener noreferrer"
           className={clsx(

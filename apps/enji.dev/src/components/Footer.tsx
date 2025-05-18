@@ -72,7 +72,7 @@ function FooterDescription() {
       <ul className={clsx('-ml-2 flex gap-1')}>
         <li>
           <a
-            href="https://github.com/enjidev"
+            href="https://github.com/Onario747"
             target="_blank"
             rel="noreferrer nofollow"
             className={clsx('flex h-9 w-9 items-center justify-center')}
